@@ -37,7 +37,63 @@ public abstract class Logger
    */
   public static final Logger getLogger(Class cl)
   {
+    if (logger == null)
+    {
+      initializeLogger();
+    }
+
     return logger.getLoggerImpl(cl);
+  }
+
+  /**
+   * Initializes the logger in a thread safe manner
+   */
+  private synchronized static void initializeLogger()
+  {
+    if (logger != null)
+    {
+      return;
+    }
+
+    String loggerName = jxl.common.log.LoggerName.NAME;
+
+    try
+    {
+      // First see if there was anything defined at run time
+      loggerName = System.getProperty("logger");
+
+      if (loggerName == null)
+      {
+        // Get the logger name from the compiled in logger 
+        loggerName = jxl.common.log.LoggerName.NAME;
+      }
+
+      logger = (Logger) Class.forName(loggerName).newInstance();
+    }
+    catch(IllegalAccessException e)
+    {
+      logger = new jxl.common.log.SimpleLogger();
+      logger.warn("Could not instantiate logger " + loggerName + 
+                  " using default");
+    }
+    catch(InstantiationException e)
+    {
+      logger = new jxl.common.log.SimpleLogger();
+      logger.warn("Could not instantiate logger " + loggerName + 
+                  " using default");
+    }
+    catch (AccessControlException e)
+    {
+      logger = new jxl.common.log.SimpleLogger();
+      logger.warn("Could not instantiate logger " + loggerName + 
+                  " using default");
+    }
+    catch(ClassNotFoundException e)
+    {
+      logger = new jxl.common.log.SimpleLogger();
+      logger.warn("Could not instantiate logger " + loggerName + 
+                  " using default");
+    }
   }
   
   /**
