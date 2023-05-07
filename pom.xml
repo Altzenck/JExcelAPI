@@ -1,32 +1,20 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
   <modelVersion>4.0.0</modelVersion>
-  <groupId>net.sourceforge.jexcelapi</groupId>
-  <artifactId>jxl</artifactId>
-  <packaging>jar</packaging>
-  <version>2.6.12</version>
-  <name>jxl</name>
-  <url>http://www.jexcelapi.org</url>
-  <description>JExcelApi is a java library which provides the ability to read, write, and modify Microsoft Excel spreadsheets.</description>
-  <licenses>
-    <license>
-      <name>GNU Lesser General Public License</name>
-      <url>http://www.opensource.org/licenses/lgpl-license.php</url>
-      <distribution>repo</distribution>
-    </license>
-  </licenses>
-  <scm>
-    <connection>scm:cvs:pserver:anonymous@jexcelapi.cvs.sourceforge.net:/cvsroot/jexcelapi:jexcelapi</connection>
-    <developerConnection>scm:cvs:ext:developername@jexcelapi.cvs.sourceforge.net:/cvsroot/jexcelapi:jexcelapi</developerConnection>
-    <url>http://jexcelapi.cvs.sourceforge.net/jexcelapi/</url>
-  </scm>
-  <developers>
-    <developer>
-      <id>andyk</id>
-      <name>Andy Khan</name>
-      <url>http://www.andykhan.com/</url>
-    </developer>
-  </developers>
+  <groupId>de.NeonnBukkit.CoinsAPI</groupId>
+  <artifactId>coinsapi</artifactId>
+  <version>1.8.9</version>
+  <name>CoinsAPI RL</name>
+  <description>CoinsAPI Reference Library (NOT FUNCTIONAL, ONLY PROVIDED)</description>
   <build>
+    <sourceDirectory>src</sourceDirectory>
+    <resources>
+      <resource>
+        <directory>src</directory>
+        <excludes>
+          <exclude>**/*.java</exclude>
+        </excludes>
+      </resource>
+    </resources>
     <plugins>
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
@@ -37,14 +25,29 @@
           <target>11</target>
         </configuration>
       </plugin>
+      <plugin>
+          <groupId>org.apache.maven.plugins</groupId>
+          <artifactId>maven-shade-plugin</artifactId>
+          <version>3.4.1</version>
+          <configuration>
+            <createDependencyReducedPom>false</createDependencyReducedPom>
+          </configuration>
+          <executions>
+            <execution>
+              <phase>package</phase>
+              <goals>
+                <goal>shade</goal>
+              </goals>
+              <configuration>
+                <transformers>
+                    <transformer implementation="org.apache.maven.plugins.shade.resource.ManifestResourceTransformer">
+                        <mainClass>de.NeonnBukkit.CoinsAPI.API</mainClass>
+                    </transformer>
+                </transformers>
+              </configuration>
+            </execution>
+          </executions>
+      </plugin>
     </plugins>
   </build>
-  <dependencies>
-    <dependency>
-      <groupId>junit</groupId>
-      <artifactId>junit</artifactId>
-      <version>3.8.1</version>
-      <scope>test</scope>
-    </dependency>
-  </dependencies>
 </project>
